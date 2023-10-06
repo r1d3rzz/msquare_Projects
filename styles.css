@@ -1,20 +1,23 @@
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
 body {
   background-color: black;
   color: white;
 }
 
-.container {
-  background-color: gray;
-  width: 300px;
-  text-align: center;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 0 auto;
-  margin-top: 50px;
+.list-div-item {
+  cursor: pointer;
+  user-select: none;
+}
+
+.done {
+  text-decoration: line-through;
+}
+
+.fa-solid {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.fa-solid:hover {
+  cursor: pointer;
+  color: red;
 }
