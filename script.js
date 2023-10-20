@@ -289,6 +289,8 @@ searchValue.addEventListener("keyup", (e) => {
 
   if (searchText == "") return;
 
+  productIndex = -1;
+
   filterProducts.forEach((p) => {
     const productDiv = document.createElement("div");
     productDiv.id = p.id;
@@ -347,9 +349,7 @@ const choiceProduct = (key) => {
     });
     const detailProduct = enterProduct[0];
     showProductDetail(isDetail, detailProduct);
-    searchValue.value = "";
-    productLists.innerHTML = "";
-    productIndex = -1;
+    return;
   }
 };
 
@@ -399,6 +399,7 @@ const showProductDetail = (show, product) => {
     closeBtn.addEventListener("click", () => {
       isDetail = false;
       showProductDetail(isDetail);
+      document.getElementById("search").focus();
     });
   } else {
     productLists.classList.remove("d-none");
