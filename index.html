@@ -13,43 +13,19 @@
       crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="styles.css" />
-    <title>Music Player V2</title>
+    <title>Auto Complete V1</title>
   </head>
   <body class="bg-dark">
     <div class="container">
-      <div class="row mt-5">
-        <div class="col-md-6 mx-auto">
-          <div class="card">
-            <div class="card-body">
-              <div class="musicTitles"></div>
-              <div class="text-center">
-                <hr />
-                <audio class="musicPlayer" src="">
-                  Your Brower not support HTML 5.
-                </audio>
-                <div>
-                  <div class="musicLength">00:00 / 00:00</div>
-                  <div id="progressBar" class="mx-auto">
-                    <div id="currentProgress"></div>
-                  </div>
-                  <div class="btns-group mt-2">
-                    <button class="previousBtn btn btn-sm btn-primary mx-3">
-                      <i class="fa-solid fa-backward-step"></i>
-                    </button>
-                    <button class="playBtn btn btn-sm btn-primary mx-3">
-                      <i class="fa-solid fa-play"></i>
-                    </button>
-                    <button class="pauseBtn btn btn-sm btn-primary mx-3 d-none">
-                      <i class="fa-solid fa-pause"></i>
-                    </button>
-                    <button class="nextBtn btn btn-sm btn-primary mx-3">
-                      <i class="fa-solid fa-forward-step"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="row">
+        <div class="col-md-6 mx-auto mt-5">
+          <input
+            type="text"
+            placeholder="Search Products"
+            class="form-control rounded-0 searchValue"
+            autofocus
+          />
+          <div class="productLists bg-light"></div>
         </div>
       </div>
     </div>
