@@ -268,13 +268,22 @@ const products = [
 ];
 
 const productLists = document.querySelector(".productLists");
+const productDetail = document.querySelector(".productDetail");
 const searchValue = document.querySelector(".searchValue");
 
+let filterProducts = [];
+let isDetail = false;
+
 searchValue.addEventListener("keyup", (e) => {
+  if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter") {
+    choiceProduct(e.key);
+    return;
+  }
+
   productLists.innerHTML = "";
 
   const searchText = e.target.value.toLowerCase();
-  const filterProducts = products.filter((p) => {
+  filterProducts = products.filter((p) => {
     return p.title.toLowerCase().includes(searchText);
   });
 
@@ -290,16 +299,121 @@ searchValue.addEventListener("keyup", (e) => {
       "p-2"
     );
 
-    const titleDiv = document.createElement("div");
-    titleDiv.append(p.title);
-
-    const imgDiv = document.createElement("div");
-    const imgTag = document.createElement("img");
+    let [titleDiv, imgDiv, imgTag] = createTitleAndImageDiv(p);
     imgTag.style.width = 50 + "px";
-    imgTag.src = p.image;
-    imgDiv.append(imgTag);
 
     productDiv.append(titleDiv, imgDiv);
+
     productLists.append(productDiv);
   });
 });
+
+let productIndex = -1;
+const choiceProduct = (key) => {
+  if (key === "ArrowDown") {
+    if (productIndex === filterProducts.length - 1) {
+      productIndex = -1;
+      deselectProduct();
+      return;
+    }
+
+    productIndex += 1;
+
+    let product = selectProduct(productIndex);
+
+    if (productIndex > 0) {
+      deselectProduct();
+    }
+
+    product.classList.add("selected");
+  } else if (key === "ArrowUp") {
+    if (productIndex === -1) return;
+
+    if (productIndex === 0) {
+      deselectProduct();
+      productIndex = -1;
+      return;
+    }
+    productIndex -= 1;
+    deselectProduct();
+    let product = selectProduct(productIndex);
+    product.classList.add("selected");
+  } else {
+    isDetail = true;
+    if (productIndex === -1) return;
+    let product = selectProduct(productIndex);
+    const enterProduct = products.filter((p) => {
+      return p.id == product.id;
+    });
+    const detailProduct = enterProduct[0];
+    showProductDetail(isDetail, detailProduct);
+    searchValue.value = "";
+    productLists.innerHTML = "";
+    productIndex = -1;
+  }
+};
+
+const selectProduct = (index) => {
+  const selectProductId = filterProducts[index].id.toString();
+  const product = document.getElementById(selectProductId);
+  product.style.backgroundColor = "blue";
+  product.firstChild.style.color = "white";
+  return product;
+};
+
+const deselectProduct = () => {
+  const selectProductItem = document.querySelector(".selected");
+  selectProductItem.style.backgroundColor = "white";
+  selectProductItem.firstChild.style.color = "black";
+  selectProductItem.classList.remove("selected");
+};
+
+const showProductDetail = (show, product) => {
+  if (show) {
+    productDetail.innerHTML = "";
+
+    productLists.classList.add("d-none");
+    productDetail.classList.remove("d-none");
+
+    const [titleDiv, imgDiv, imgTag] = createTitleAndImageDiv(product);
+
+    const productDiv = document.createElement("div");
+    productDiv.id = product.id;
+    productDiv.classList.add("card", "mx-auto", "p-3", "w-50");
+    productDiv.style.width = 10 + "rem";
+
+    imgTag.classList.add("card-img-top");
+
+    const cardBodyDiv = document.createElement("div");
+    cardBodyDiv.classList.add("card-body");
+
+    const closeBtn = document.createElement("button");
+    closeBtn.classList.add("btn", "btn-danger");
+    closeBtn.textContent = "Close";
+
+    cardBodyDiv.append(titleDiv, closeBtn);
+    productDiv.append(imgTag, cardBodyDiv);
+
+    productDetail.append(productDiv);
+
+    closeBtn.addEventListener("click", () => {
+      isDetail = false;
+      showProductDetail(isDetail);
+    });
+  } else {
+    productLists.classList.remove("d-none");
+    productDetail.classList.add("d-none");
+  }
+};
+
+const createTitleAndImageDiv = (product) => {
+  const titleDiv = document.createElement("div");
+  titleDiv.append(product.title);
+
+  const imgDiv = document.createElement("div");
+  const imgTag = document.createElement("img");
+  imgTag.src = product.image;
+  imgDiv.append(imgTag);
+
+  return [titleDiv, imgDiv, imgTag];
+};
